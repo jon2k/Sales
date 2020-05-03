@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Telegram.Bot.Sales.EF;
 using Telegram.Bot.Sales.Models;
 
@@ -12,12 +13,14 @@ namespace Telegram.Bot.Sales.Repos
     {
         protected readonly DbSet<T> _table;
         private readonly ApplicationContext _db;
+        protected readonly ILogger<ApplicationContext> _logger;
         protected ApplicationContext Context => _db;
 
         public BaseRepo(ApplicationContext context)
         {          
             _db = context;
             _table = _db.Set<T>();
+            _logger = context.Logger;
         }
 
         public void Dispose()

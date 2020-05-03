@@ -10,12 +10,10 @@ namespace Telegram.Bot.Sales.Controllers
     [Route("api/[controller]")]
     public class UpdateController : Controller
     {
-        private readonly IUpdateService _updateService;
         private readonly ISelectService _selectService;
 
-        public UpdateController(IUpdateService updateService, ISelectService selectService)
+        public UpdateController(ISelectService selectService)
         {
-            _updateService = updateService;
             _selectService = selectService;
         }
 
@@ -23,7 +21,6 @@ namespace Telegram.Bot.Sales.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Update update)
         {
-           // await _updateService.EchoAsync(update);
             await _selectService.SelectTypeUpdateAndExecute(update);
             return Ok();
         }

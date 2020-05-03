@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Telegram.Bot.Examples.DotNetCoreWebHook": {
+    "Telegram.Bot.Sales": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

@@ -23,13 +23,12 @@ namespace Telegram.Bot.Sales
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IUpdateService, UpdateService>();
             services.AddScoped<ICommandService, CommandsService>();
             services.AddScoped<ISelectService, SelectService.SelectService>();
             services.AddScoped<ICallBackService, CallBackService.CallBackService>();
             services.AddSingleton<IBotService, BotService>();
             services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));
-            services.AddDbContext<ApplicationContext>(options=>
+            services.AddDbContext<ApplicationContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("SalesDatabase")));
 
             services

@@ -7,14 +7,12 @@ namespace Telegram.Bot.Sales.EF
 
     public class ApplicationContext : DbContext
     {
-        private ILogger<ApplicationContext> _logger;
-        public string ConnString { get; set; }
+        public ILogger<ApplicationContext> Logger { get; }
+       // public string ConnString { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options, ILogger<ApplicationContext> logger):base(options)
         {
-            _logger = logger;        
-            //ConnString = "workstation id=discount.mssql.somee.com;packet size=4096;user id=jon2k_SQLLogin_1;pwd=k5vn16q426;data source=discount.mssql.somee.com;persist security info=False;initial catalog=discount;multipleActiveResultSets=True";
-
+            Logger = logger;                 
             //Create DB, it it doesn't exist
             Database.EnsureCreated();
         }
