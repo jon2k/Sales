@@ -43,6 +43,7 @@ namespace Telegram.Bot.Sales.Repos
         {
             var res = from c in Context.Products
                       join p in Context.OrdersCurrent on c.Id equals p.ProductId
+                      where p.CustomerId==customer.Id
                       select c;
             return res;
         }
