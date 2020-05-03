@@ -13,10 +13,10 @@ namespace Telegram.Bot.Sales.CallBackService
     {
         private List<ICallBack> _callBack;
         private readonly IBotService _botService;
-        private readonly ILogger<StartCommand> _logger;
+        private readonly ILogger<CallBackService> _logger;
         private readonly ApplicationContext _context;
 
-        public CallBackService(IBotService botService, ILogger<StartCommand> logger, ApplicationContext context)
+        public CallBackService(IBotService botService, ILogger<CallBackService> logger, ApplicationContext context)
         {
             _botService = botService;
             _logger = logger;

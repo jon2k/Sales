@@ -12,10 +12,6 @@ using Telegram.Bot.Sales.Services;
 
 namespace Telegram.Bot.Sales
 {
-    public interface ITest
-    { }
-    public class Test:ITest
-    { }
     public class Startup
     {
         public Startup(IConfiguration configuration)

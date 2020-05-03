@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Telegram.Bot.Sales.Models;
 
 namespace Telegram.Bot.Sales.EF
@@ -6,14 +7,12 @@ namespace Telegram.Bot.Sales.EF
 
     public class ApplicationContext : DbContext
     {
+        private ILogger<ApplicationContext> _logger;
         public string ConnString { get; set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options):base(options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options, ILogger<ApplicationContext> logger):base(options)
         {
-            //Recieve connection string to DB
-            //ConnString = GetConnectionStringToDB.Execute();
-            //ConnString = "Data Source=SQL6001.site4now.net;Initial Catalog=DB_A4878F_mysite;User Id=DB_A4878F_mysite_admin;Password=823537148Jon2k";
-            // ConnString = "Data Source=EVGENIY-PC\\SQLEXPRESS;Initial Catalog=discount2; Integrated Security=true";
+            _logger = logger;        
             //ConnString = "workstation id=discount.mssql.somee.com;packet size=4096;user id=jon2k_SQLLogin_1;pwd=k5vn16q426;data source=discount.mssql.somee.com;persist security info=False;initial catalog=discount;multipleActiveResultSets=True";
 
             //Create DB, it it doesn't exist
@@ -31,12 +30,7 @@ namespace Telegram.Bot.Sales.EF
         public DbSet<Product> Products { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<TypeNotification> TypesNotifications { get; set; }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    //Use provider to MSSQL
-        //    optionsBuilder.UseSqlServer(ConnString);
-        //}
+    
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()

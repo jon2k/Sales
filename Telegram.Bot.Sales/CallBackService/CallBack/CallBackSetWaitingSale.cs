@@ -11,10 +11,10 @@ namespace Telegram.Bot.Sales.CallBackService.CallBack
     public class CallBackSetWaitingSale:ICallBack
     {
         private readonly IBotService _botService;
-        private readonly ILogger<StartCommand> _logger;
+        private readonly ILogger<CallBackService> _logger;
         private readonly ApplicationContext _context;
 
-        public CallBackSetWaitingSale(IBotService botService, ILogger<StartCommand> logger, ApplicationContext context)
+        public CallBackSetWaitingSale(IBotService botService, ILogger<CallBackService> logger, ApplicationContext context)
         {
             _botService = botService;
             _logger = logger;

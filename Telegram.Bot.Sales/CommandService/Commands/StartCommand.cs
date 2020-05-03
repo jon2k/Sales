@@ -10,9 +10,9 @@ namespace Telegram.Bot.Sales.CommandService.Commands
         public string Name => @"/start";
 
         private readonly IBotService _botService;
-        private readonly ILogger<StartCommand> _logger;
+        private readonly ILogger<CommandsService> _logger;
 
-        public StartCommand(IBotService botService, ILogger<StartCommand> logger)
+        public StartCommand(IBotService botService, ILogger<CommandsService> logger)
         {
             _botService = botService;
             _logger = logger;

@@ -15,7 +15,7 @@ namespace Telegram.Bot.Sales.Repos
         protected ApplicationContext Context => _db;
 
         public BaseRepo(ApplicationContext context)
-        {
+        {          
             _db = context;
             _table = _db.Set<T>();
         }

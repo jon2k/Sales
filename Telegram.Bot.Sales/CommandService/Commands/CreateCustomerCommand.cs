@@ -15,10 +15,10 @@ namespace Telegram.Bot.Sales.CommandService.Commands
     {
         public string Name => @"/register";
         private readonly IBotService _botService;
-        private readonly ILogger<StartCommand> _logger;
+        private readonly ILogger<CommandsService> _logger;
         private readonly ApplicationContext _context;
 
-        public CreateCustomerCommand(IBotService botService, ILogger<StartCommand> logger, ApplicationContext context)
+        public CreateCustomerCommand(IBotService botService, ILogger<CommandsService> logger, ApplicationContext context)
         {
             _botService = botService;
             _logger = logger;

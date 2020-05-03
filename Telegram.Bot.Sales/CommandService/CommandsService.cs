@@ -12,10 +12,10 @@ namespace Telegram.Bot.Sales.CommandService
     {
         private List<ICommand> _commands;
         private readonly IBotService _botService;
-        private readonly ILogger<StartCommand> _logger;
+        private readonly ILogger<CommandsService> _logger;
         private readonly ApplicationContext _context;
 
-        public CommandsService(IBotService botService, ILogger<StartCommand> logger, ApplicationContext context)
+        public CommandsService(IBotService botService, ILogger<CommandsService> logger, ApplicationContext context)
         {
             _botService = botService;
             _logger = logger;

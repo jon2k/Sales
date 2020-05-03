@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Telegram.Bot.Sales.CallBackService;
 using Telegram.Bot.Sales.CommandService;
@@ -10,11 +11,13 @@ namespace Telegram.Bot.Sales.SelectService
     {
         private readonly ICallBackService _callBackService;
         private readonly ICommandService _commandService;
+        private readonly ILogger<SelectService> _logger;
 
-        public SelectService(ICallBackService callBack, ICommandService command)
+        public SelectService(ICallBackService callBack, ICommandService command, ILogger<SelectService> logger)
         {
             _callBackService = callBack;
             _commandService = command;
+            _logger = logger;
         }
         public async Task SelectTypeUpdateAndExecute(Update update)
         {
