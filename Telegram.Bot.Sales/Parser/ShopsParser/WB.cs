@@ -4,18 +4,11 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Telegram.Bot.Sales.EF;
 using Telegram.Bot.Sales.Models;
+using Telegram.Bot.Sales.Parser.Extensions;
 using Telegram.Bot.Sales.Repos;
 
 namespace Telegram.Bot.Sales.Parser.ShopsParser
 {
-    public enum CurrencyType
-    {
-        Empty,
-        Russia,
-        USA,
-        Europa,
-        England
-    }
     public class WB : IParser
     {
         private readonly ApplicationContext _context;
@@ -60,7 +53,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
                     return (product: new Product { Name = name?.InnerText, Url = urlProduct, ProductCod = productCod?.InnerText, Shop = shop }, msgAlarm: null);
                 }
                 catch (Exception e)
-                { return (product: null, msg: e.Message); }
+                { return (product: null, msgAlarm: e.Message); }
             }
             else
             {
@@ -91,7 +84,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
                         string strFirst = price.InnerText.Replace("&#xA0", "");
                         string priceStr = new String(strFirst.Where(Char.IsDigit).ToArray());
                         double pr = Double.Parse(priceStr);
-                        var currency = GetCurrency(price.InnerText);
+                        var currency = price.InnerText.GetCurrency();
                         Currency cur;
                         BaseRepo<Currency> db = new BaseRepo<Currency>(_context);
                         cur = db.GetAll().Find(x => x.Id == (int)currency);
@@ -115,23 +108,6 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
             {
                 return (productPriceHistory: null, msgAlarm: "Argument must not be null.");
             }
-        }
-        private CurrencyType GetCurrency(string text)
-        {
-            if (text.Contains("Руб") || text.Contains("Р") || text.Contains("P") || (text.Contains("руб") || text.Contains("р") || text.Contains("p") || text.Contains("RUR") || text.Contains("rur") || text.Contains("₽")))
-            {
-                return CurrencyType.Russia;
-            }
-            else if (text.Contains("$"))
-            {
-                return CurrencyType.USA;
-            }
-            else if (text.Contains("EURO") || text.Contains("Euro") || text.Contains("euro"))
-            {
-                return CurrencyType.Europa;
-            }
-            else
-                return CurrencyType.Empty;
-        }
+        }    
     }
 }
