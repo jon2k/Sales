@@ -33,6 +33,10 @@ namespace Telegram.Bot.Sales.Parser
                         //  break;
                         case "wildberries.ru":
                             return new WB(_context);
+                        case "www.mvideo.ru":
+                            return new Mvideo(_context);
+                        case "mvideo.ru":
+                            return new Mvideo(_context);
 
                         default:
                             msg = $"Sorry. We don't work with {host}.";

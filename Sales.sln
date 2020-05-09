@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot.Sales", "Telegram.Bot.Sales\Telegram.Bot.Sales.csproj", "{A17D178C-CF08-4071-9288-4BBD17218C09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Function.Parsing.Sales", "Function.Parsing.Sales\Function.Parsing.Sales.csproj", "{D978EC97-2B90-4CFC-84A3-0B5945AAA99F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Function.Parsing.Sales", "Function.Parsing.Sales\Function.Parsing.Sales.csproj", "{D978EC97-2B90-4CFC-84A3-0B5945AAA99F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

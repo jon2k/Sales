@@ -18,7 +18,7 @@ namespace Telegram.Bot.Sales.Parser.Extensions
     {
         public static CurrencyType GetCurrency(this string text)
         {
-            if (text.Contains("Руб") || text.Contains("Р") || text.Contains("P") || (text.Contains("руб") || text.Contains("р") || text.Contains("p") || text.Contains("RUR") || text.Contains("rur") || text.Contains("₽")))
+            if (text.Contains("Руб") || text.Contains("Р") || text.Contains("P") || (text.Contains("руб") || text.Contains("р") || text.Contains("p") || text.Contains("RUR") || text.Contains("rur") || text.Contains("₽") || text.Contains("¤")))
             {
                 return CurrencyType.Russia;
             }
