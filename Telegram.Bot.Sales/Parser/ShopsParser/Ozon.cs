@@ -133,5 +133,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
                 return (productPriceHistory: null, msgAlarm: "Argument must not be null.");
             }
         }
+
+       
     }
 }

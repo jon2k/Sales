@@ -5,14 +5,14 @@ namespace Telegram.Bot.Sales.Orders
 {
     public class Order
     {
-        public (OrderCurrent orderCurrent, string msgAlarm) CreateOrderCurrent(Customer customer, Product product, Byte percentDiscount)
+        public (OrderCurrent orderCurrent, string msgAlarm) CreateOrderCurrent(Customer customer, Product product, DateTime time, Byte percentDiscount)
         {
             if (customer != null && product != null)
             {
                 OrderCurrent orderCurrent = new OrderCurrent();
                 orderCurrent.Customer = customer;
                 orderCurrent.Product = product;
-                orderCurrent.TimeStartNotif = DateTime.Now;               
+                orderCurrent.TimeStartNotif = time;               
                 orderCurrent.ExpectedPercentDiscount = percentDiscount;
 
                 return (orderCurrent, null);

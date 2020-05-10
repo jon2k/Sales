@@ -35,9 +35,19 @@ namespace Telegram.Bot.Sales.Parser
 
         public async Task<(ProductPriceHistory productPriceHistory, string msgAlarm)> ParsingPriceAsync(Product product)
         {
+            IParser parserPrice;
             if (product != null)
             {
-                var parserPrice = product.Shop.Parser;
+                if (product.Shop.Parser!=null)
+                {
+                    parserPrice = product.Shop.Parser;
+                }
+                else
+                {
+                    var definitionParser = new DedinitionParser(_context);
+                    parserPrice = definitionParser.DefinitionTypeParser(product.Url, out string message);
+                }
+                //var parserPrice = product.Shop.Parser;
                 return await parserPrice.ParsingPriceAsync(product);
             }
             else

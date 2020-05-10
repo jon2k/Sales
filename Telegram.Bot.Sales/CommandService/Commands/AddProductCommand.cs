@@ -35,7 +35,6 @@ namespace Telegram.Bot.Sales.CommandService.Commands
         public async Task Execute(Message message)
         {
             string MessageToCustomer;
-            bool _existProduct = false;
             try
             {
                 //Get Customer ID
@@ -73,8 +72,7 @@ namespace Telegram.Bot.Sales.CommandService.Commands
                                 // Check same product to db.
                                 pr = repo.GetProductByUrl(product.product.Url);
                                 if (pr != null)
-                                {
-                                    _existProduct = true;
+                                {                                  
                                     product.Item1 = pr;
                                 }
                                 else
@@ -83,19 +81,16 @@ namespace Telegram.Bot.Sales.CommandService.Commands
                                     await repo.Add(product.product);
                                     pr = repo.GetProductByUrl(product.product.Url);
                                 }
-                                if (!_existProduct)
-                                {
-                                    productPriceHistory.productPriceHistory.Product = pr;
-                                    ProductPriceHistoryRepo repo2 = new ProductPriceHistoryRepo(_context);
-                                    await repo2.Add(productPriceHistory.productPriceHistory);
-                                }
+                                productPriceHistory.productPriceHistory.Product = pr;
+                                ProductPriceHistoryRepo repo2 = new ProductPriceHistoryRepo(_context);
+                                await repo2.Add(productPriceHistory.productPriceHistory);
 
                                 // Notification's only telegram, because this command only for telegramm.
 
                                 // Create Current Order.
                                 Order order = new Order();
                                 bool exist = false;
-                                var currentOrder = order.CreateOrderCurrent(customer, pr, 5);
+                                var currentOrder = order.CreateOrderCurrent(customer, pr, productPriceHistory.productPriceHistory.DateTime, 5);
                                 OrderCurrentRepo repo3 = new OrderCurrentRepo(_context);
                                 exist = repo3.CheckExistOrder(currentOrder.orderCurrent);
                                 if (!exist)

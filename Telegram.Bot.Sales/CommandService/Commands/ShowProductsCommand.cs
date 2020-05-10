@@ -56,13 +56,13 @@ namespace Telegram.Bot.Sales.CommandService.Commands
                         {
                             string data = $"Delete {product.Id}";
                             var inlineKeyboard = new InlineKeyboardMarkup(new[]
-                           {
-                    // first row
-                    new []
-                    {
-                        InlineKeyboardButton.WithCallbackData("Delete", data)
-                       // InlineKeyboardButton.WithCallbackData("Test", "Удалено"),
-                    }  });
+                            {
+                                new []
+                                {
+                                    InlineKeyboardButton.WithCallbackData("Delete", data)
+                                   // InlineKeyboardButton.WithCallbackData("Test", "Удалено"),
+                                }
+                            });
 
                             await _botService.Client.SendTextMessageAsync(message.Chat.Id, product.Url, replyMarkup: inlineKeyboard);
 
