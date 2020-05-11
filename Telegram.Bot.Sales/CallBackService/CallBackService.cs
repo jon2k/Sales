@@ -23,7 +23,7 @@ namespace Telegram.Bot.Sales.CallBackService
             _context = context;
             _callBack = new List<ICallBack>();
             _callBack.Add(new CallBackRemoveProductFromWaitingList(_botService, _logger, _context));
-            _callBack.Add(new CallBackSetWaitingSale(_botService, _logger, _context));
+            _callBack.Add(new CallBackChangeDiscount(_botService, _logger, _context));
             _callBack.Add(new CallBackEndWaitingProduct(_botService, _logger, _context));
         }
         public async Task Execute(CallbackQuery callback)

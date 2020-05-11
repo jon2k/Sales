@@ -59,13 +59,11 @@ namespace Telegram.Bot.Sales.CommandService.Commands
                             {
                                 new []
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Delete", data)
-                                   // InlineKeyboardButton.WithCallbackData("Test", "Удалено"),
+                                    InlineKeyboardButton.WithCallbackData("Delete", data)                     
                                 }
                             });
 
                             await _botService.Client.SendTextMessageAsync(message.Chat.Id, product.Url, replyMarkup: inlineKeyboard);
-
                         }
                         success = true;
                     }

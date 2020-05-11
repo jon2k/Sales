@@ -14,6 +14,7 @@ namespace Telegram.Bot.Sales.Repos
         {
 
         }
+
         public bool CheckExistOrder(OrderCurrent entity)
         {
             var res = _table.Where(
@@ -36,7 +37,9 @@ namespace Telegram.Bot.Sales.Repos
 
         public OrderCurrent GetConcreteOrderCustomers(long codeTelegram, int idProduct)
         {
-            return _table.Where(n => n.Customer.CodeTelegram == codeTelegram && n.ProductId == idProduct).FirstOrDefault();
+            return _table.Where(n => n.Customer.CodeTelegram == codeTelegram && n.ProductId == idProduct)
+                .Include(n=>n.Product)
+                .FirstOrDefault();
         }
 
         public IEnumerable<Product> GetAllProductByCustomer(Customer customer)
