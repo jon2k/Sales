@@ -37,7 +37,10 @@ namespace Telegram.Bot.Sales.Parser
                             return new Mvideo(_context);
                         case "mvideo.ru":
                             return new Mvideo(_context);
-
+                        case "www.bask.ru":
+                            return new Bask(_context);
+                        case "bask.ru":
+                            return new Bask(_context);
                         default:
                             msg = $"Sorry. We don't work with {host}.";
                             return null;
