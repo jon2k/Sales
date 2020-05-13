@@ -27,10 +27,8 @@ namespace Telegram.Bot.Sales.Parser
                             return new Ozon(_context);
                         case "ozon.ru":
                             return new Ozon(_context);
-                        //  break;
                         case "www.wildberries.ru":
                             return new WB(_context);
-                        //  break;
                         case "wildberries.ru":
                             return new WB(_context);
                         case "www.mvideo.ru":
@@ -41,6 +39,10 @@ namespace Telegram.Bot.Sales.Parser
                             return new Bask(_context);
                         case "bask.ru":
                             return new Bask(_context);
+                        case "www.planeta-sport.ru":
+                            return new PlanetaSport(_context);
+                        case "planeta-sport.ru":
+                            return new PlanetaSport(_context);
                         default:
                             msg = $"Sorry. We don't work with {host}.";
                             return null;

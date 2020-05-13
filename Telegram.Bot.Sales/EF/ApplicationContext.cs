@@ -8,11 +8,11 @@ namespace Telegram.Bot.Sales.EF
     public class ApplicationContext : DbContext
     {
         public ILogger<ApplicationContext> Logger { get; }
-       // public string ConnString { get; set; }
+        // public string ConnString { get; set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options, ILogger<ApplicationContext> logger):base(options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options, ILogger<ApplicationContext> logger) : base(options)
         {
-            Logger = logger;                 
+            Logger = logger;
             //Create DB, it it doesn't exist
             Database.EnsureCreated();
         }
@@ -28,7 +28,7 @@ namespace Telegram.Bot.Sales.EF
         public DbSet<Product> Products { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<TypeNotification> TypesNotifications { get; set; }
-    
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()
@@ -41,7 +41,8 @@ namespace Telegram.Bot.Sales.EF
                     new Shop { Id=1, Name="WB", Url="www.wildberries.ru"},
                     new Shop { Id=2, Name="Ozon", Url="www.ozon.ru"},
                     new Shop { Id=3, Name="Mvideo", Url="www.mvideo.ru"},
-                    new Shop { Id=4, Name="Bask", Url="www.bask.ru"}
+                    new Shop { Id=4, Name="Bask", Url="www.bask.ru"},
+                    new Shop {Id=5, Name="PlanetaSport", Url="www.planeta-sport.ru"}
                 });
             modelBuilder.Entity<Currency>().HasData(
                 new Currency[]

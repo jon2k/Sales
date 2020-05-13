@@ -23,8 +23,9 @@ namespace Function.ParsingPrice.Sales
             _botService = botService;
         }
         [FunctionName("ParsingPrice")]
-        public async Task ParsingPrice([TimerTrigger("0 30 11 * * *")]TimerInfo myTimer, ILogger logger)
+        public async Task ParsingPrice([TimerTrigger("0 30 9 * * *")]TimerInfo myTimer, ILogger logger)
         {
+
             var productsOpderCurrent = _context.OrdersCurrent.Include(n => n.Product)
                                             .ThenInclude(n => n.Shop)
                                             .Select(n => n.Product)
@@ -75,9 +76,9 @@ namespace Function.ParsingPrice.Sales
                     double first = startPrice.Price / 100;
                     double second = currentPrice.Price / first;
                     byte discount = (byte)(100 - second);
-                    if (discount>=order.ExpectedPercentDiscount)
+                    if (discount >= order.ExpectedPercentDiscount)
                     {
-                        string msg=$" **The price has been reduced by. {discount}%. " +
+                        string msg = $" **The price has been reduced by. {discount}%. " +
                             $"Old price - {startPrice.Price}. " +
                             $"Current price - {currentPrice.Price}.** " +
                             $"{ order.Product.Url} ";
