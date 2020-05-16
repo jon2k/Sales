@@ -17,11 +17,13 @@ namespace Function.ParsingPrice.Sales
     {
         private readonly ApplicationContext _context;
         private readonly IBotService _botService;
+
         public FunctionParsingPrice(ApplicationContext context, IBotService botService)
         {
             _context = context;
             _botService = botService;
         }
+
         [FunctionName("ParsingPrice")]
         public async Task ParsingPrice([TimerTrigger("0 30 9 * * *")]TimerInfo myTimer, ILogger logger)
         {
@@ -32,7 +34,7 @@ namespace Function.ParsingPrice.Sales
                                             .Distinct()
                                             .ToList();
 
-            Parsing parser = new Parsing(_context);
+            Parsing parser = new Parsing(_context, logger);
             ProductPriceHistoryRepo repo2 = new ProductPriceHistoryRepo(_context);
             if (productsOpderCurrent != null && productsOpderCurrent.Count != 0)
             {
@@ -72,10 +74,8 @@ namespace Function.ParsingPrice.Sales
                 foreach (var order in orderCurrent)
                 {
                     var startPrice = repo.GetByTime(order.Product, order.TimeStartNotif);
-                    var currentPrice = repo.GetLastByTime(order.Product);
-                    double first = startPrice.Price / 100;
-                    double second = currentPrice.Price / first;
-                    byte discount = (byte)(100 - second);
+                    var currentPrice = repo.GetLastByTime(order.Product);             
+                    byte discount = CalculateDiscount(startPrice.Price, currentPrice.Price);
                     if (discount >= order.ExpectedPercentDiscount)
                     {
                         string msg = $" **The price has been reduced by. {discount}%. " +
@@ -96,6 +96,15 @@ namespace Function.ParsingPrice.Sales
                     }
                 }
             }
+        }
+        private byte CalculateDiscount(double oldPrice, double newPrice)
+        {
+            if (oldPrice > newPrice)
+            {
+                return (byte)(100 - (newPrice / (oldPrice / 100)));
+            }
+            else
+                return 0;
         }
     }
 }

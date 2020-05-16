@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
 {
     public class PlanetaSport : BaseShop
     {
-        public PlanetaSport(ApplicationContext context):base(context)
+        public PlanetaSport(ApplicationContext context, ILogger logger) : base(context, logger)
         {
 
         }
@@ -20,6 +21,6 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
 
         public override string Price => ".//span[@class='onlyMoney']";
 
-        public override string PriceCleaning => "";
+        public override string PriceCleaning => " ";
     }
 }

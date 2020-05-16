@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
 {
     public class MyShop : BaseShop
     {
-        public MyShop(ApplicationContext context):base(context)
+        public MyShop(ApplicationContext context, ILogger<Parsing> logger) : base(context, logger)
         {
 
         }

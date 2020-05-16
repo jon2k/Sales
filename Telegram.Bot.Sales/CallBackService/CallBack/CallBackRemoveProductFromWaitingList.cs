@@ -69,6 +69,7 @@ namespace Telegram.Bot.Sales.CallBackService.CallBack
                 await _botService.Client.AnswerCallbackQueryAsync(
                      callbackQueryId: callback.Id,
                      text: $"Cannot be deleted");
+                _logger.LogError($"{DateTime.Now} -- {nameof(CallBackRemoveProductFromWaitingList)} --  {e.Message}");
             }          
         }
     }

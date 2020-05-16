@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
     public abstract class BaseShop : IParser
     {
         private readonly ApplicationContext _context;
+        private readonly ILogger _logger;
 
         public abstract string Name { get; }
         public abstract string ProductCod { get; }
@@ -19,9 +21,10 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
         public abstract string Price { get; }
         public abstract string PriceCleaning { get; }
 
-        public BaseShop(ApplicationContext context)
+        public BaseShop(ApplicationContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<(Product product, string msgAlarm)> ParsingProductAsync(string urlProduct)
@@ -36,31 +39,41 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
                     var name = htmlDoc.DocumentNode.SelectSingleNode(Name);
                     if (name == null)
                     {
+                        _logger.LogError($"{DateTime.Now} -- {nameof(BaseShop)} -- Product name not found! {urlProduct}");
                         return (product: null, msgAlarm: "Product name not found!");
+
                     }
                     var productCod = htmlDoc.DocumentNode.SelectSingleNode(ProductCod);
                     var descr = htmlDoc.DocumentNode.SelectSingleNode(Description);
 
                     // Defenition type Shop.
-                    Type myType = typeof(Bask);
-                    string type = myType.ToString();
-                    string[] arr = type.Split(".");
-                    string nameClass = arr[arr.Length - 1];
+                    var uri = new Uri(urlProduct);
+                    string host = uri.Host;
+
+                    //Type myType = typeof(Bask);
+                    //string type = myType.ToString();
+                    //string[] arr = type.Split(".");
+                    //string nameClass = arr[arr.Length - 1];
                     Shop shop = null;
                     BaseRepo<Shop> db = new BaseRepo<Shop>(_context);
-                    shop = db.GetAll().Find(x => x.Name == nameClass);
+                    shop = db.GetAll().Find(x => x.Url == host);
                     if (shop == null)
                     {
+                        _logger.LogError($"{DateTime.Now} -- {nameof(BaseShop)} --  Your Shop not found in the database.");
                         return (product: null, msgAlarm: "Your Shop not found in the database.");
                     }
 
                     return (product: new Product { Name = name?.InnerText, Url = urlProduct, ProductCod = productCod?.InnerText, Shop = shop }, msgAlarm: null);
                 }
                 catch (Exception e)
-                { return (product: null, msgAlarm: e.Message); }
+                {
+                    _logger.LogError($"{DateTime.Now} -- {nameof(BaseShop)} --  {e.Message}");
+                    return (product: null, msgAlarm: e.Message);
+                }
             }
             else
             {
+                _logger.LogError($"{DateTime.Now} -- {nameof(BaseShop)} --  Argument must not be null.");
                 return (product: null, msgAlarm: "Argument must not be null.");
             }
         }
@@ -91,10 +104,14 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
                     return (productPriceHistory: new ProductPriceHistory { Product = product, DateTime = DateTime.Now, Price = pr, Currency = cur }, msgAlarm: null);
                 }
                 catch (Exception e)
-                { return (productPriceHistory: null, msgAlarm: e.Message); }
+                {
+                    _logger.LogError($"{DateTime.Now} -- {nameof(BaseShop)} --  {e.Message}");
+                    return (productPriceHistory: null, msgAlarm: e.Message);
+                }
             }
             else
             {
+                _logger.LogError($"{DateTime.Now} -- {nameof(BaseShop)} --  Argument must not be null.");
                 return (productPriceHistory: null, msgAlarm: "Argument must not be null.");
             }
         }

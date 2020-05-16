@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.EventSource;
 using Telegram.Bot.Sales.EF;
 using Telegram.Bot.Sales.Models;
 using Telegram.Bot.Sales.Orders;
@@ -58,7 +59,7 @@ namespace Telegram.Bot.Sales.CommandService.Commands
                     if (link != string.Empty)
                     {
                         // Get product.
-                        Parsing parser = new Parsing(_context);
+                        Parsing parser = new Parsing(_context, _logger);
                         var product = await parser.ParsingProductAsync(link);
                         if (product.msgAlarm == null)
                         {
@@ -104,6 +105,7 @@ namespace Telegram.Bot.Sales.CommandService.Commands
 
                                     MessageToCustomer = $"*** Your product has been added to the waiting list. ***" +
                                         $"{product.product.Url} ";
+                                    _logger.LogInformation($"{DateTime.Now} -- {nameof(AddProductCommand)} --  {MessageToCustomer}");
                                 }
                                 else
                                 {
@@ -113,11 +115,13 @@ namespace Telegram.Bot.Sales.CommandService.Commands
                             else
                             {
                                 MessageToCustomer = productPriceHistory.msgAlarm;
+                                _logger.LogError($"{DateTime.Now} -- {nameof(AddProductCommand)} --  {MessageToCustomer}");
                             }
                         }
                         else
                         {
                             MessageToCustomer = product.msgAlarm;
+                            _logger.LogError($"{DateTime.Now} -- {nameof(AddProductCommand)} --  {MessageToCustomer}");
                         }
                     }
                     else
@@ -133,6 +137,7 @@ namespace Telegram.Bot.Sales.CommandService.Commands
             catch (Exception e)
             {
                 MessageToCustomer = e.Message;
+                _logger.LogError($"{DateTime.Now} -- {nameof(AddProductCommand)} --  {e.Message}");
             }
 
             await _botService.Client.SendTextMessageAsync(message.Chat.Id, MessageToCustomer, parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);

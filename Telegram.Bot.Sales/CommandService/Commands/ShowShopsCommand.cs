@@ -50,6 +50,7 @@ namespace Telegram.Bot.Sales.CommandService.Commands
             catch (Exception e)
             {
                 messageToCustomer = "Failed to get store data";
+                _logger.LogError($"{DateTime.Now} -- {nameof(ShowShopsCommand)} --  {e.Message}");
             }
             await _botService.Client.SendTextMessageAsync(chatId, messageToCustomer, parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
         }

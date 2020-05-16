@@ -71,6 +71,7 @@ namespace Telegram.Bot.Sales.CallBackService.CallBack
                 await _botService.Client.AnswerCallbackQueryAsync(
                                                callbackQueryId: callback.Id,
                                                text: "Product has already been removed from the waiting list");
+                _logger.LogError($"{DateTime.Now} -- {nameof(CallBackEndWaitingProduct)} --  {e.Message}");
             }
         }
     }

@@ -15,7 +15,7 @@ namespace Function.ParsingPrice.Sales
         public override void Configure(IFunctionsHostBuilder builder)
         {
             string SqlConnection = Environment.GetEnvironmentVariable("SqlConnectionString");
-            // builder.Services.AddLogging();
+           // builder.Services.AddApplicationInsightsTelemetry();
             builder.Services.AddSingleton<IBotService, BotService>();
             builder.Services.AddOptions<BotConfiguration>()
                 .Configure<IConfiguration>((settings, configuration) =>
@@ -25,7 +25,6 @@ namespace Function.ParsingPrice.Sales
 
             builder.Services.AddDbContext<ApplicationContext>(
                             options => options.UseSqlServer(SqlConnection));
-            //builder.Services.AddSingleton<ILoggerProvider, MyLoggerProvider>();
         }
     }
 }

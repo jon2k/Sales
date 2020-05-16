@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Telegram.Bot.Sales.EF;
 
 namespace Telegram.Bot.Sales.Parser.ShopsParser
@@ -5,7 +6,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
     public class WB : BaseShop
     {
        
-        public WB(ApplicationContext context):base(context)
+        public WB(ApplicationContext context, ILogger logger) : base(context, logger)
         {
            
         }

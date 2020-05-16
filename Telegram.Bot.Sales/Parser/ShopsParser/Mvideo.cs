@@ -1,10 +1,11 @@
-﻿using Telegram.Bot.Sales.EF;
+﻿using Microsoft.Extensions.Logging;
+using Telegram.Bot.Sales.EF;
 
 namespace Telegram.Bot.Sales.Parser.ShopsParser
 {
     public class Mvideo : BaseShop
     {       
-        public Mvideo(ApplicationContext context):base(context)
+        public Mvideo(ApplicationContext context, ILogger logger) : base(context, logger)
         {
    
         }

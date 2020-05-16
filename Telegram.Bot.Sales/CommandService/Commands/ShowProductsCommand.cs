@@ -79,6 +79,7 @@ namespace Telegram.Bot.Sales.CommandService.Commands
             catch (Exception e)
             {
                 MessageToCustomer = e.Message;
+                _logger.LogError($"{DateTime.Now} -- {nameof(ShowProductsCommand)} --  {e.Message}");
             }
             if (!success)
             {

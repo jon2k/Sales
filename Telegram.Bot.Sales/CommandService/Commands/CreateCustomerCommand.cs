@@ -101,6 +101,7 @@ namespace Telegram.Bot.Sales.CommandService.Commands
                             else
                             {
                                 MessageToCustomer = "Multiple users have the same Telegram code!!! Write in support please.";
+                                _logger.LogError($"{DateTime.Now} -- {nameof(CreateCustomerCommand)} --  {MessageToCustomer}");
                             }
                         }
                         catch (Exception ee)
@@ -114,8 +115,9 @@ namespace Telegram.Bot.Sales.CommandService.Commands
             }
             catch (Exception e)
             {
-                // MessageToCustomer = "Exception. Write in support please.";
-                MessageToCustomer = e.Message;
+                 MessageToCustomer = "Exception. Write in support please.";
+                //MessageToCustomer = e.Message;
+                _logger.LogError($"{DateTime.Now} -- {nameof(CreateCustomerCommand)} --  {e.Message}");
             }
 
             //Send message to Customer

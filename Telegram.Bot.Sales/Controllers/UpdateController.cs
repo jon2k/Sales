@@ -1,8 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot.Sales.SelectService;
-using Telegram.Bot.Sales.Services;
 using Telegram.Bot.Types;
 
 namespace Telegram.Bot.Sales.Controllers
@@ -29,7 +28,7 @@ namespace Telegram.Bot.Sales.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "Successfull" };
         }
 
         // GET api/values/5
