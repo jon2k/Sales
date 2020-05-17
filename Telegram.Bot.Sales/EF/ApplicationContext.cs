@@ -39,10 +39,9 @@ namespace Telegram.Bot.Sales.EF
                 new Shop[]
                 {
                     new Shop { Id=1, Name="WB", Url="www.wildberries.ru"},
-                    new Shop { Id=2, Name="Ozon", Url="www.ozon.ru"},
-                    new Shop { Id=3, Name="Mvideo", Url="www.mvideo.ru"},
-                    new Shop { Id=4, Name="Bask", Url="www.bask.ru"},
-                    new Shop {Id=5, Name="PlanetaSport", Url="www.planeta-sport.ru"}
+                    new Shop { Id=2, Name="Mvideo", Url="www.mvideo.ru"},
+                    new Shop { Id=3, Name="Bask", Url="www.bask.ru"},
+                    new Shop { Id=4, Name="PlanetaSport", Url="www.planeta-sport.ru"}
                 });
             modelBuilder.Entity<Currency>().HasData(
                 new Currency[]
