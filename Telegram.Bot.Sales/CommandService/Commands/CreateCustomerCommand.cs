@@ -72,13 +72,13 @@ namespace Telegram.Bot.Sales.CommandService.Commands
 
                             //Change old Customer to DB                             
                             var deletedCustomer = db.GetDeletedCustomers(chatId);
-                            if (deletedCustomer.Count > 0)
+                            if (deletedCustomer!=null)
                             {
-                                deletedCustomer.First().DateOfBirth = DateOfBirth;
-                                deletedCustomer.First().Email = Email;
-                                deletedCustomer.First().Name = Name;
-                                deletedCustomer.First().IsDeleted = false;
-                                await db.Change(deletedCustomer.First());
+                                deletedCustomer.DateOfBirth = DateOfBirth;
+                                deletedCustomer.Email = Email;
+                                deletedCustomer.Name = Name;
+                                deletedCustomer.IsDeleted = false;
+                                await db.Change(deletedCustomer);
                             }
                             else
                             {

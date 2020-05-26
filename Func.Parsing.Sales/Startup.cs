@@ -15,7 +15,7 @@ namespace Function.ParsingPrice.Sales
         public override void Configure(IFunctionsHostBuilder builder)
         {
             string SqlConnection = Environment.GetEnvironmentVariable("SqlConnectionString");
-           // builder.Services.AddApplicationInsightsTelemetry();
+            builder.Services.AddApplicationInsightsTelemetry();
             builder.Services.AddSingleton<IBotService, BotService>();
             builder.Services.AddOptions<BotConfiguration>()
                 .Configure<IConfiguration>((settings, configuration) =>

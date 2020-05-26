@@ -50,7 +50,7 @@ namespace Telegram.Bot.Sales
             aiOptions.EnableAzureInstanceMetadataTelemetryModule = false;
             aiOptions.EnableAppServicesHeartbeatTelemetryModule = false;*/
 
-           // services.AddApplicationInsightsTelemetry(aiOptions);
+            services.AddApplicationInsightsTelemetry();
             services.AddScoped<ICommandService, CommandsService>();
             services.AddScoped<ISelectService, SelectService.SelectService>();
             services.AddScoped<ICallBackService, CallBackService.CallBackService>();

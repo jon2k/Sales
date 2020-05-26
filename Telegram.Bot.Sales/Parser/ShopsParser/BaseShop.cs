@@ -29,31 +29,52 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
 
         public async Task<(Product product, string msgAlarm)> ParsingProductAsync(string urlProduct)
         {
+            string name;
+            string descr;
+            string cod;
             if (urlProduct != null)
             {
                 HtmlWeb web = new HtmlWeb();
                 try
                 {
                     var htmlDoc = await web.LoadFromWebAsync(urlProduct);
-
-                    var name = htmlDoc.DocumentNode.SelectSingleNode(Name);
-                    if (name == null)
+                    if (Name != string.Empty)
                     {
-                        _logger.LogError($"{DateTime.Now} -- {nameof(BaseShop)} -- Product name not found! {urlProduct}");
-                        return (product: null, msgAlarm: "Product name not found!");
+                        var nameHtml = htmlDoc.DocumentNode.SelectSingleNode(Name);
+                        if (nameHtml == null)
+                        {
+                            _logger.LogError($"{DateTime.Now} -- {nameof(BaseShop)} -- Product name not found! {urlProduct}");
+                            return (product: null, msgAlarm: "Product name not found!");
 
+                        }
+                        name = nameHtml.InnerText.Replace("\n","").Trim(new char[] {' '});
                     }
-                    var productCod = htmlDoc.DocumentNode.SelectSingleNode(ProductCod);
-                    var descr = htmlDoc.DocumentNode.SelectSingleNode(Description);
+                    else
+                        name = "unknown";
+                    if (ProductCod != string.Empty)
+                    {
+                        var codHtml = htmlDoc.DocumentNode.SelectSingleNode(ProductCod);
+                        cod = codHtml.InnerText;
+                    }
+                    else
+                        cod = "unknown";
+                    if (Description != string.Empty)
+                    {
+                        var descrHtml = htmlDoc.DocumentNode.SelectSingleNode(Description);
+                        descr = descrHtml.InnerText;
+                    }
+                    else
+                        descr = "unknown";
+                    
 
                     // Defenition type Shop.
                     var uri = new Uri(urlProduct);
                     string host = uri.Host;
-
-                    //Type myType = typeof(Bask);
-                    //string type = myType.ToString();
-                    //string[] arr = type.Split(".");
-                    //string nameClass = arr[arr.Length - 1];
+                    if (!host.Contains("www."))
+                    {
+                        host = "www." + host;
+                    }
+                   
                     Shop shop = null;
                     BaseRepo<Shop> db = new BaseRepo<Shop>(_context);
                     shop = db.GetAll().Find(x => x.Url == host);
@@ -63,7 +84,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
                         return (product: null, msgAlarm: "Your Shop not found in the database.");
                     }
 
-                    return (product: new Product { Name = name?.InnerText, Url = urlProduct, ProductCod = productCod?.InnerText, Shop = shop }, msgAlarm: null);
+                    return (product: new Product { Name = name, Url = urlProduct, ProductCod = cod, Shop = shop }, msgAlarm: null);
                 }
                 catch (Exception e)
                 {
@@ -90,7 +111,11 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
                     {
                         return (productPriceHistory: null, msgAlarm: "Product price not found!");
                     }
-                    string strFirst = price.InnerText.Replace(PriceCleaning, "");
+                    string strFirst = price.InnerText;
+                    if (PriceCleaning!=string.Empty)
+                    {
+                        strFirst = strFirst.Replace(PriceCleaning, "");
+                    }
                     string priceStr = new String(strFirst.Where(Char.IsDigit).ToArray());
                     double pr = Double.Parse(priceStr);
                     var currency = price.InnerText.GetCurrency();

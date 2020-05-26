@@ -13,9 +13,9 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
         {
 
         }
-        public override string Name => ".//h1[@class='productHeader']";
+        public override string Name => ".//span[@class='hitnProductName']";
 
-        public override string ProductCod => "0";
+        public override string ProductCod => "";
 
         public override string Description => ".//div[@class='detail-products__mobiletabs-text']";
 

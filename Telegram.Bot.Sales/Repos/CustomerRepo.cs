@@ -16,16 +16,16 @@ namespace Telegram.Bot.Sales.Repos
 
         public Customer GetOneByCodTelegram(long? id)
         {
-            return Context.Customers.First(x => x.CodeTelegram == id);
+            return Context.Customers.FirstOrDefault(x => x.CodeTelegram == id);
         }
 
         public List<Customer> GetActualCustomers(long codeTelegram)
         {
             return Context.Customers.Where(x => x.CodeTelegram == codeTelegram && x.IsDeleted == false).ToList();
         }
-        public List<Customer> GetDeletedCustomers(long codeTelegram)
+        public Customer GetDeletedCustomers(long codeTelegram)
         {
-            return Context.Customers.Where(x => x.CodeTelegram == codeTelegram && x.IsDeleted == true).ToList();
+            return Context.Customers.FirstOrDefault(x => x.CodeTelegram == codeTelegram && x.IsDeleted == true);
         }
     }
 }

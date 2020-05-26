@@ -29,7 +29,8 @@ namespace Telegram.Bot.Sales.CommandService.Commands
         {
             var chatId = message.Chat.Id;
             string MessageToCustomer =
-@"List commands:
+@"Bot monitors product discounts. Just send the product link to the bot and wait for the discount message!
+List commands:
 /register - registration in the system
 /delete - delete my registration data
 /show - show all my products on the waiting list

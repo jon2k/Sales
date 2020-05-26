@@ -23,29 +23,30 @@ namespace Telegram.Bot.Sales.Parser
                 {
                     var uri = new Uri(urlProduct);
                     string host = uri.Host;
+                    if (!host.Contains("www."))
+                    {
+                        host = "www." + host;
+                    }
                     msg = null;
                     switch (host)
-                    {
-                        case "www.ozon.ru":
-                            return new Ozon(_context);
-                        case "ozon.ru":
-                            return new Ozon(_context);
+                    {                   
                         case "www.wildberries.ru":
-                            return new WB(_context, _logger);
-                        case "wildberries.ru":
-                            return new WB(_context, _logger);
+                            return new WB(_context, _logger);                     
                         case "www.mvideo.ru":
-                            return new Mvideo(_context, _logger);
-                        case "mvideo.ru":
-                            return new Mvideo(_context, _logger);
+                            return new Mvideo(_context, _logger);                       
                         case "www.bask.ru":
-                            return new Bask(_context, _logger);
-                        case "bask.ru":
-                            return new Bask(_context, _logger);
+                            return new Bask(_context, _logger);                  
                         case "www.planeta-sport.ru":
                             return new PlanetaSport(_context, _logger);
-                        case "planeta-sport.ru":
-                            return new PlanetaSport(_context, _logger);
+                        case "www.lamoda.ru":
+                            return new Lamoda(_context, _logger);
+                        case "www.trial-sport.ru":
+                            return new TrialSport(_context, _logger);
+                        case "www.velostrana.ru":
+                            return new Velostrana(_context, _logger);
+                        case "www.velosklad.ru":
+                            return new Velosklad(_context, _logger);
+
                         default:
                             msg = $"Sorry. We don't work with {host}.";
                             return null;
