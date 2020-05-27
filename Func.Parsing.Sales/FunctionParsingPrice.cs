@@ -38,19 +38,14 @@ namespace Function.ParsingPrice.Sales
             ProductPriceHistoryRepo repo2 = new ProductPriceHistoryRepo(_context);
             if (productsOpderCurrent != null && productsOpderCurrent.Count != 0)
             {
-                foreach (var item in productsOpderCurrent)
-                {
-                    var productPriceHistory = await parser.ParsingPriceAsync(item);
-                    if (productPriceHistory.msgAlarm == null)
-                    {
-                        await repo2.Add(productPriceHistory.productPriceHistory);
-                    }
-                    else
-                    {
-                        Console.WriteLine(productPriceHistory.msgAlarm);
-                        logger.LogInformation($"{productPriceHistory.msgAlarm} {DateTime.Now}");
-                    }
+                var task = productsOpderCurrent.Select(n => parser.ParsingPriceAsync(n));
+                var result = await Task.WhenAll(task);
+
+                try
+                {                
+                    await repo2.AddRange(result.Select(n=>n.productPriceHistory).ToList());                 
                 }
+                catch(Exception e) { logger.LogError(e.Message); }               
             }
             else
             {
@@ -97,6 +92,7 @@ namespace Function.ParsingPrice.Sales
                 }
             }
         }
+
         private byte CalculateDiscount(double oldPrice, double newPrice)
         {
             if (oldPrice > newPrice)

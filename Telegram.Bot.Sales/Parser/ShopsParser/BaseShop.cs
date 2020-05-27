@@ -119,14 +119,14 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
                     string priceStr = new String(strFirst.Where(Char.IsDigit).ToArray());
                     double pr = Double.Parse(priceStr);
                     var currency = price.InnerText.GetCurrency();
-                    Currency cur;
-                    BaseRepo<Currency> db = new BaseRepo<Currency>(_context);
-                    cur = db.GetAll().Find(x => x.Id == (int)currency);
-                    if (cur == null)
-                    {
-                        return (productPriceHistory: null, msgAlarm: "Currency not found in the database.");
-                    }
-                    return (productPriceHistory: new ProductPriceHistory { Product = product, DateTime = DateTime.Now, Price = pr, Currency = cur }, msgAlarm: null);
+                    //Currency cur;
+                    //BaseRepo<Currency> db = new BaseRepo<Currency>(_context);
+                    //cur = db.GetAll().Find(x => x.Id == (int)currency);
+                    //if (cur == null)
+                    //{
+                    //    return (productPriceHistory: null, msgAlarm: "Currency not found in the database.");
+                    //}
+                    return (productPriceHistory: new ProductPriceHistory { Product = product, DateTime = DateTime.Now, Price = pr, CurrencyId = 1 }, msgAlarm: null);
                 }
                 catch (Exception e)
                 {
