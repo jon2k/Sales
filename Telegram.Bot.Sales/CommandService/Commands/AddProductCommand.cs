@@ -44,90 +44,95 @@ namespace Telegram.Bot.Sales.CommandService.Commands
                 Customer customer;
                 CustomerRepo db = new CustomerRepo(_context);
                 customer = db.GetOneByCodTelegram(chatId);
-                if (customer != null && !customer.IsDeleted)
+                if (customer != null)
                 {
-                    string[] msg = message.Text.Split();
-                    string link = string.Empty;
-                    foreach (var item in msg)
+                    if (!customer.IsDeleted) 
                     {
-                        if (item.Contains(Name))
+                        string[] msg = message.Text.Split();
+                        string link = string.Empty;
+                        foreach (var item in msg)
                         {
-                            link = item;
-                            break;
-                        }
-                    }
-                    if (link != string.Empty)
-                    {
-                        // Get product.
-                        Parsing parser = new Parsing(_context, _logger);
-                        var product = await parser.ParsingProductAsync(link);
-                        if (product.msgAlarm == null)
-                        {
-                            // Get ProductPriceHistory.
-                            var productPriceHistory = await parser.ParsingPriceAsync(product.product);
-
-                            if (productPriceHistory.msgAlarm == null)
+                            if (item.Contains(Name))
                             {
-                                Product pr;
-                                ProductRepo repo = new ProductRepo(_context);
-                                // Check same product to db.
-                                pr = repo.GetProductByUrl(product.product.Url);
-                                if (pr != null)
-                                {                                  
-                                    product.Item1 = pr;
-                                }
-                                else
+                                link = item;
+                                break;
+                            }
+                        }
+                        if (link != string.Empty)
+                        {
+                            // Get product.
+                            Parsing parser = new Parsing(_context, _logger);
+                            var product = await parser.ParsingProductAsync(link);
+                            if (product.msgAlarm == null)
+                            {
+                                // Get ProductPriceHistory.
+                                var productPriceHistory = await parser.ParsingPriceAsync(product.product);
+
+                                if (productPriceHistory.msgAlarm == null)
                                 {
-                                    // Add new Product to DB.
-                                    await repo.Add(product.product);
+                                    Product pr;
+                                    ProductRepo repo = new ProductRepo(_context);
+                                    // Check same product to db.
                                     pr = repo.GetProductByUrl(product.product.Url);
-                                }
-                                productPriceHistory.productPriceHistory.Product = pr;
-                                ProductPriceHistoryRepo repo2 = new ProductPriceHistoryRepo(_context);
-                                await repo2.Add(productPriceHistory.productPriceHistory);
-
-                                // Notification's only telegram, because this command only for telegramm.
-
-                                // Create Current Order.
-                                Order order = new Order();
-                                bool exist = false;
-                                var currentOrder = order.CreateOrderCurrent(customer, pr, productPriceHistory.productPriceHistory.DateTime, 5);
-                                OrderCurrentRepo repo3 = new OrderCurrentRepo(_context);
-                                exist = repo3.CheckExistOrder(currentOrder.orderCurrent);
-                                if (!exist)
-                                {
-                                    NotificationRepo repo4 = new NotificationRepo(_context);
-                                    await repo4.Add(new Notification()
+                                    if (pr != null)
                                     {
-                                        OrderCurrent = currentOrder.orderCurrent,
-                                        TypeNotificationId = 1
-                                    });
+                                        product.Item1 = pr;
+                                    }
+                                    else
+                                    {
+                                        // Add new Product to DB.
+                                        await repo.Add(product.product);
+                                        pr = repo.GetProductByUrl(product.product.Url);
+                                    }
+                                    productPriceHistory.productPriceHistory.Product = pr;
+                                    ProductPriceHistoryRepo repo2 = new ProductPriceHistoryRepo(_context);
+                                    await repo2.Add(productPriceHistory.productPriceHistory);
 
-                                    MessageToCustomer = $"*** Your product has been added to the waiting list. ***" +
-                                        $"{product.product.Url} ";
-                                    _logger.LogInformation($"{DateTime.Now} -- {nameof(AddProductCommand)} --  {MessageToCustomer}");
+                                    // Notification's only telegram, because this command only for telegramm.
+
+                                    // Create Current Order.
+                                    Order order = new Order();
+                                    bool exist = false;
+                                    var currentOrder = order.CreateOrderCurrent(customer, pr, productPriceHistory.productPriceHistory.DateTime, 5);
+                                    OrderCurrentRepo repo3 = new OrderCurrentRepo(_context);
+                                    exist = repo3.CheckExistOrder(currentOrder.orderCurrent);
+                                    if (!exist)
+                                    {
+                                        NotificationRepo repo4 = new NotificationRepo(_context);
+                                        await repo4.Add(new Notification()
+                                        {
+                                            OrderCurrent = currentOrder.orderCurrent,
+                                            TypeNotificationId = 1
+                                        });
+
+                                        MessageToCustomer = $"*** Your product has been added to the waiting list. ***" +
+                                            $"{product.product.Url} ";
+                                        _logger.LogInformation($"{DateTime.Now} -- {nameof(AddProductCommand)} --  {MessageToCustomer}");
+                                    }
+                                    else
+                                    {
+                                        MessageToCustomer = "You already added this product to the waiting list";
+                                    }
                                 }
                                 else
                                 {
-                                    MessageToCustomer = "You already added this product to the waiting list";
+                                    MessageToCustomer = productPriceHistory.msgAlarm;
+                                    _logger.LogError($"{DateTime.Now} -- {nameof(AddProductCommand)} --  {MessageToCustomer}");
                                 }
                             }
                             else
                             {
-                                MessageToCustomer = productPriceHistory.msgAlarm;
+                                MessageToCustomer = product.msgAlarm;
                                 _logger.LogError($"{DateTime.Now} -- {nameof(AddProductCommand)} --  {MessageToCustomer}");
                             }
                         }
                         else
                         {
-                            MessageToCustomer = product.msgAlarm;
-                            _logger.LogError($"{DateTime.Now} -- {nameof(AddProductCommand)} --  {MessageToCustomer}");
+                            MessageToCustomer = "Invalid command. Please write your link";
                         }
                     }
                     else
-                    {
-                        MessageToCustomer = "Invalid command. Please write your link";
-                    }
+                        MessageToCustomer = "You are not registred!!";
                 }
                 else
                 {
