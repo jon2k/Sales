@@ -27,7 +27,7 @@ namespace Telegram.Bot.Sales
             Configuration = configuration;
            // _logger = logger;
         }
-
+        //test for pipeline
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
