@@ -15,7 +15,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
 
         public override string ProductCod => ".//span[@class='j-article']";
 
-        public override string Description => ".//div[@class='description j-collapsable-description i-collapsable-v1']";
+        public override string Description => "";
 
         public override string Price => ".//span[@class='final-cost']";
 
