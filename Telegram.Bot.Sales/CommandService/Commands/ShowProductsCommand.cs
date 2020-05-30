@@ -37,7 +37,7 @@ namespace Telegram.Bot.Sales.CommandService.Commands
         public async Task Execute(Message message)
         {
             string MessageToCustomer = string.Empty;
-            bool success = false;
+            bool notSuccess = false;
             try
             {
                 IEnumerable<Product> products;
@@ -52,38 +52,47 @@ namespace Telegram.Bot.Sales.CommandService.Commands
                     products = repo2.GetAllProductByCustomer(customer).ToList();
                     if (products != null && products.Count() != 0)
                     {
-                        foreach (var product in products)
-                        {
-                            string data = $"Delete {product.Id}";
-                            var inlineKeyboard = new InlineKeyboardMarkup(new[]
-                            {
-                                new []
-                                {
-                                    InlineKeyboardButton.WithCallbackData("Delete", data)                     
-                                }
-                            });
-
-                            await _botService.Client.SendTextMessageAsync(message.Chat.Id, product.Url, replyMarkup: inlineKeyboard);
-                        }
-                        success = true;
+                        SendMsg(products, customer);
                     }
                     else
                     {
                         MessageToCustomer = "You don't have product in the waiting list";
+                        notSuccess = true;
                     }
                 }
                 else
+                {
                     MessageToCustomer = "You are not registred!!";
-
+                    notSuccess = true;
+                }
             }
             catch (Exception e)
             {
                 MessageToCustomer = e.Message;
+                notSuccess = true;
                 _logger.LogError($"{DateTime.Now} -- {nameof(ShowProductsCommand)} --  {e.Message}");
             }
-            if (!success)
+            if (notSuccess)
             {
                 await _botService.Client.SendTextMessageAsync(message.Chat.Id, MessageToCustomer, parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
+            }
+        }
+
+
+        private async void SendMsg(IEnumerable<Product> products, Customer customer)
+        {
+            foreach (var product in products)
+            {
+                string data = $"Delete {product.Id}";
+                var inlineKeyboard = new InlineKeyboardMarkup(new[]
+                {
+                    new []
+                    {
+                        InlineKeyboardButton.WithCallbackData("Delete", data)
+                    }
+                }
+                );
+                await _botService.Client.SendTextMessageAsync(customer.CodeTelegram, product.Url, replyMarkup: inlineKeyboard);
             }
         }
     }
