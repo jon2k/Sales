@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using Telegram.Bot.Sales.EF;
 using Telegram.Bot.Sales.Models;
 using Telegram.Bot.Sales.Repos;
@@ -18,9 +19,12 @@ namespace Telegram.Bot.Sales.Tests.Repos
         private void Seed()
         {
             using var context = new ApplicationContext(ContextOptions, null);
-             context.Database.EnsureDeleted();
+            // context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
+            var cus = context.Customers.Where(n => n.Name == "Name1" || n.Name == "Name2");
+            context.Customers.RemoveRange(cus);
+            context.SaveChanges();
             var one = new Customer() { CodeTelegram = 123456, Email = "test@test.com", Name = "Name1" };
             var two = new Customer() { CodeTelegram = 123456789, Email = "test2@test.com", Name = "Name2", IsDeleted = true };
 

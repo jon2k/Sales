@@ -22,13 +22,5 @@ namespace Telegram.Bot.Sales.Repos
             return base.Add(entity);
 
         }
-        public int Add1(Product entity)
-        {
-            Context.Shops.Attach(entity.Shop);
-            Context.Products.Add(entity);
-            return Context.SaveChanges();
-
-
-        }
     }
 }

@@ -19,8 +19,17 @@ namespace Telegram.Bot.Sales.Tests.Repos
         private void Seed()
         {
             using var context = new ApplicationContext(ContextOptions, null);
-            context.Database.EnsureDeleted();
+           // context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
+            var pr = context.Products.Where(n => n.Name == "Product");
+            var cus = context.Customers.Where(n => n.Name == "Name1");
+            var not = context.Notifications.Where(n => n.OrderCurrentId == 1);
+            context.Notifications.RemoveRange(not);
+            context.SaveChanges();
+            context.Products.RemoveRange(pr);
+            context.SaveChanges();
+            context.Customers.RemoveRange(cus);          
+            context.SaveChanges();
         }
 
         [Fact]
