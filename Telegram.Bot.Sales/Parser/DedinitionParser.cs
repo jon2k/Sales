@@ -2,7 +2,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using Telegram.Bot.Sales.EF;
 using Telegram.Bot.Sales.Parser.ShopsParser;
-using Telegram.Bot.Sales.Parser.ShopsParser.Shops;
 
 namespace Telegram.Bot.Sales.Parser
 {

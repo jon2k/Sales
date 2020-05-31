@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot.Sales.EF;
 
-namespace Telegram.Bot.Sales.Parser.ShopsParser.Shops
+namespace Telegram.Bot.Sales.Parser.ShopsParser
 {
     public class Velodrive : BaseShop
     {
@@ -19,7 +19,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser.Shops
 
         public override string Description => "";
 
-        public override string Price => ".//div[@class='price price--sale']";
+        public override string Price => ".//span[@class='price price--sale']";
 
         public override string PriceCleaning => "";
     }
