@@ -123,5 +123,7 @@ namespace Telegram.Bot.Sales.CommandService.Commands
             //Send message to Customer
             await _botService.Client.SendTextMessageAsync(chatId, MessageToCustomer, parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
         }
+
+
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using Telegram.Bot.Sales.EF;
 using Telegram.Bot.Sales.Parser.ShopsParser;
+using Telegram.Bot.Sales.Parser.ShopsParser.Shops;
 
 namespace Telegram.Bot.Sales.Parser
 {
@@ -46,6 +47,8 @@ namespace Telegram.Bot.Sales.Parser
                             return new Velostrana(_context, _logger);
                         case "www.velosklad.ru":
                             return new Velosklad(_context, _logger);
+                        case "www.velodrive.ru":
+                            return new Velodrive(_context, _logger);
 
                         default:
                             msg = $"Sorry. We don't work with {host}.";
