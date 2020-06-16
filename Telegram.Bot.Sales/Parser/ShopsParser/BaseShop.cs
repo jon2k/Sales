@@ -109,7 +109,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
                     var price = htmlDoc.DocumentNode.SelectSingleNode(Price);
                     if (price == null)
                     {
-                        return (productPriceHistory: null, msgAlarm: "Product price not found!");
+                        return (productPriceHistory: null, msgAlarm: $"{product.Url} Product price not found!");
                     }
                     string strFirst = price.InnerText;
                     if (PriceCleaning!=string.Empty)
@@ -137,7 +137,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
             else
             {
                 _logger.LogError($"{DateTime.Now} -- {nameof(BaseShop)} --  Argument must not be null.");
-                return (productPriceHistory: null, msgAlarm: "Argument must not be null.");
+                return (productPriceHistory: null, msgAlarm: $"Argument must not be null.");
             }
         }
     }

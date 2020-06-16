@@ -25,7 +25,7 @@ namespace Function.ParsingPrice.Sales
         }
 
         [FunctionName("ParsingPrice")]
-        public async Task ParsingPrice([TimerTrigger("0 30 9 * * *")]TimerInfo myTimer, ILogger logger)
+        public async Task ParsingPrice([TimerTrigger("0 30 6 * * *")]TimerInfo myTimer, ILogger logger)
         {
 
             var productsOpderCurrent = _context.OrdersCurrent.Include(n => n.Product)
@@ -42,10 +42,20 @@ namespace Function.ParsingPrice.Sales
                 var result = await Task.WhenAll(task);
 
                 try
-                {                
-                    await repo2.AddRange(result.Select(n=>n.productPriceHistory).ToList());                 
+                {
+                   // var test = result.Select(n => n.productPriceHistory).ToList();
+                    await repo2.AddRange(result.Where(x=>x.msgAlarm==null).Select(n=>n.productPriceHistory).ToList());                 
                 }
-                catch(Exception e) { logger.LogError(e.Message); }               
+                catch(Exception e) { logger.LogError(e.Message); }
+
+                var test = result.Where(x => x.msgAlarm != null).ToList();
+                if (test!=null)
+                {
+                    foreach (var item in test)
+                    {
+                        await _botService.Client.SendTextMessageAsync(866216037, item.msgAlarm, parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
+                    }
+                }
             }
             else
             {
