@@ -19,7 +19,7 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
 
         public override string Description => "";
 
-        public override string Price => ".//div[@class='price']";
+        public override string Price => "//table[@class='b25 prices_for_popup']/tr[1]/td[2]/div[@class='price']";
 
         public override string PriceCleaning => "";
     }
