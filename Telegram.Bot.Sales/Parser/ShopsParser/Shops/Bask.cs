@@ -8,10 +8,10 @@ namespace Telegram.Bot.Sales.Parser.ShopsParser
         public Bask(ApplicationContext context, ILogger logger) : base(context,logger)
         {
         }
-        public override string Name => ".//div[@class='caption text-center border-bottom fs21 text-bold']";
-        public override string ProductCod => ".//div[@class='article-item']";
+        public override string Name => ".//h1[@class='p-block__name sm-hidden h3']";
+        public override string ProductCod => ".//span[@class='art']";
         public override string Description => "";
-        public override string Price => ".//div[@class='price']";
+        public override string Price => ".//span[@class='avail-b']";
         public override string PriceCleaning => "";
     }
 }
